@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="midnight">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Privacy // TRINKET LAB</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+  main.doc { max-width: 720px; margin: 0 auto; padding: 40px 20px 80px; line-height: 1.7; }
+  main.doc h1 { font-family: var(--mono); letter-spacing: .1em; }
+  main.doc h2 { font-family: var(--mono); font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-top: 2em; }
+  main.doc a { color: var(--a1); }
+</style>
+</head>
+<body>
+<div class="bg-grid" aria-hidden="true"></div>
+<main class="doc">
+  <p><a href="./">← back to the lab</a></p>
+  <h1>Privacy</h1>
+  <p>TRINKET LAB is a static site. Every tool runs inside your browser tab. There is no backend, no account, and nothing you paste, type, draw or upload is ever transmitted to a server operated by this site.</p>
+
+  <h2>What stays on your device</h2>
+  <p>Some tools remember your inputs (notes, tasks, links, theme, the last text you pasted) using your browser's <em>localStorage</em>. That data never leaves your browser. You can export it, import it, or wipe it from <strong>Settings → Reset everything</strong>, or by clearing site data in your browser.</p>
+
+  <h2>Third-party requests</h2>
+  <p>The page loads two web fonts from Google Fonts, and the Launchpad tool requests small favicon images from Google for the sites you bookmark. Those providers see the ordinary request metadata (your IP address, user agent). Everything else is served from GitHub Pages, which may keep standard server logs.</p>
+
+
+  <h2>Permissions</h2>
+  <p>A few tools ask the browser for a capability (camera for Image Forge capture, microphone for the tuner, location for the QR geo preset and Device Scope). Each request is optional, happens only when you press the relevant button, and the data is processed locally.</p>
+
+  <h2>Contact</h2>
+  <p>Source code and issues: <a href="https://github.com/rueyday/WebLab" rel="noopener" target="_blank">github.com/rueyday/WebLab</a>.</p>
+</main>
+</body>
+</html>

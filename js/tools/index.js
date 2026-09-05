@@ -1,0 +1,41 @@
+/* Tool registry — import order = display order within each category. */
+import "./home.js";
+import "./text.js";
+import "./transform.js";
+import "./regex.js";
+import "./diff.js";
+import "./markdown.js";
+import "./json.js";
+import "./url.js";
+import "./hash.js";
+import "./encode.js";
+import "./secrets.js";
+import "./cipher.js";
+import "./image.js";
+import "./color.js";
+import "./qr.js";
+import "./draw.js";
+import "./units.js";
+import "./calc.js";
+import "./time.js";
+import "./net.js";
+import "./device.js";
+import "./input.js";
+import "./notes.js";
+import "./links.js";
+import "./audio.js";
+import "./random.js";
+import "./pdf.js";
+import "./archive.js";
+import "./glyphs.js";
+import "./css.js";
+import "./sandbox.js";
+import "./code.js";
+import "./table.js";
+import "./media.js";
+import "./hardware.js";
+import "./api.js";
+import "./weather.js";
+import "./cheats.js";
+
+export function registerAll() { /* imports above self-register via defineTool */ }

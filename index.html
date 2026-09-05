@@ -1,15 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="midnight">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>TRINKET LAB // WebLab</title>
-<meta name="description" content="A small console of tools I actually use: live text metrics and a paste-in image editor." />
+<title>TRINKET LAB // every web tool, one tab</title>
+<meta name="description" content="TRINKET LAB — 30+ browser-only tools: text, image, colour, JSON, regex, hashes, encoders, QR codes, converters, timers, notes and more. No uploads, no accounts, works offline." />
+<meta name="theme-color" content="#04060d" />
+<meta property="og:title" content="TRINKET LAB" />
+<meta property="og:description" content="Every small web tool you need, running entirely in your browser." />
+<meta property="og:type" content="website" />
+<link rel="manifest" href="manifest.webmanifest" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⬢</text></svg>" />
+<link rel="apple-touch-icon" href="icon.svg" />
 <link rel="stylesheet" href="styles.css" />
+<script>
+  // apply saved theme before first paint to avoid a flash
+  try {
+    var s = JSON.parse(localStorage.getItem("trinket:settings") || "{}");
+    var root = document.documentElement;
+    if (s.theme) root.dataset.theme = s.theme;
+    if (s.fx === false) root.dataset.fx = "off";
+    if (s.glow === false) root.dataset.glow = "off";
+    if (s.motion === false) root.dataset.motion = "off";
+    if (s.density) root.dataset.density = s.density;
+  } catch (e) {}
+</script>
 </head>
 <body>
 <div class="bg-grid" aria-hidden="true"></div>
@@ -19,112 +37,50 @@
 
 <header class="site-head">
   <div class="brand">
-    <div class="brand-mark">⬢</div>
+    <button class="icon-btn" id="rail-toggle" title="Toggle sidebar (⌘B)" aria-label="Toggle sidebar">☰</button>
+    <button class="brand-mark" id="brand-home" title="Home" aria-label="Home">⬢</button>
     <div class="brand-text">
       <h1>TRINKET<span>LAB</span></h1>
-      <p class="tagline">small tools · zero uploads · runs entirely in your browser</p>
+      <p class="tagline">every tool · zero uploads · runs in your tab</p>
     </div>
   </div>
-  <div class="status-chip"><span class="dot"></span> SYSTEM ONLINE</div>
+  <div class="head-tools">
+    <button class="search-btn" id="open-palette" type="button">
+      <span>⌕</span><span class="grow">search tools…</span><span class="kbd">⌘K</span>
+    </button>
+    <span class="clock" id="clock" title="Local time">--:--:--</span>
+    <button class="icon-btn" id="btn-theme" title="Cycle theme (⌘⇧T)" aria-label="Theme">◐</button>
+    <button class="icon-btn" id="btn-fullscreen" title="Fullscreen (F11)" aria-label="Fullscreen">⛶</button>
+    <button class="icon-btn" id="btn-help" title="Keyboard shortcuts (?)" aria-label="Help">?</button>
+    <button class="icon-btn" id="btn-settings" title="Settings" aria-label="Settings">⚙</button>
+  </div>
 </header>
 
-<nav class="tabs" role="tablist" aria-label="Tools">
-  <button class="tab is-active" role="tab" id="tab-text" aria-controls="panel-text" aria-selected="true" data-panel="panel-text">
-    <span class="tab-idx">01</span> TEXT METRICS
-  </button>
-  <button class="tab" role="tab" id="tab-image" aria-controls="panel-image" aria-selected="false" data-panel="panel-image">
-    <span class="tab-idx">02</span> IMAGE FORGE
-  </button>
-  <div class="tab-glider" aria-hidden="true"></div>
-</nav>
-
-<main>
-  <!-- ───────────────────────── TEXT ───────────────────────── -->
-  <section class="panel is-active" id="panel-text" role="tabpanel" aria-labelledby="tab-text">
-    <div class="panel-grid">
-      <div class="card editor-card">
-        <div class="card-head">
-          <h2>INPUT BUFFER</h2>
-          <div class="card-actions">
-            <button class="btn ghost" id="text-paste" type="button">Paste</button>
-            <button class="btn ghost" id="text-copy" type="button">Copy</button>
-            <button class="btn ghost danger" id="text-clear" type="button">Clear</button>
-          </div>
-        </div>
-        <textarea id="text-input" spellcheck="false" placeholder="Paste or type anything here…&#10;&#10;Metrics update live. Nothing leaves this tab."></textarea>
-      </div>
-
-      <div class="stats">
-        <div class="stat" data-accent="cyan">
-          <div class="stat-label">Characters</div>
-          <div class="stat-value" id="stat-chars">0</div>
-          <div class="stat-sub">including whitespace</div>
-        </div>
-        <div class="stat" data-accent="magenta">
-          <div class="stat-label">Characters</div>
-          <div class="stat-value" id="stat-chars-nws">0</div>
-          <div class="stat-sub">without whitespace</div>
-        </div>
-        <div class="stat" data-accent="violet">
-          <div class="stat-label">Words</div>
-          <div class="stat-value" id="stat-words">0</div>
-          <div class="stat-sub">whitespace separated</div>
-        </div>
-        <div class="stat" data-accent="lime">
-          <div class="stat-label">Lines</div>
-          <div class="stat-value" id="stat-lines">0</div>
-          <div class="stat-sub">newline separated</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ───────────────────────── IMAGE ───────────────────────── -->
-  <section class="panel" id="panel-image" role="tabpanel" aria-labelledby="tab-image" hidden>
-    <div class="card image-card">
-      <div class="card-head">
-        <h2>IMAGE FORGE</h2>
-        <div class="card-actions" id="image-actions" hidden>
-          <button class="btn" id="btn-invert" type="button">⧉ Invert</button>
-          <button class="btn" id="btn-crop" type="button" disabled>⛶ Crop selection</button>
-          <button class="btn ghost" id="btn-reset" type="button">↺ Reset</button>
-          <button class="btn ghost danger" id="btn-unload" type="button">✕ Close</button>
-          <button class="btn primary" id="btn-download" type="button">↓ Download PNG</button>
-        </div>
-      </div>
-
-      <div class="dropzone" id="dropzone" tabindex="0">
-        <div class="dz-inner">
-          <div class="dz-icon">⌘V</div>
-          <p class="dz-title">Paste an image anywhere</p>
-          <p class="dz-sub">or drop a file here · or <span class="link" id="browse">browse your disk</span></p>
-        </div>
-        <input type="file" id="file-input" accept="image/*" hidden />
-      </div>
-
-      <div class="stage-wrap" id="stage-wrap" hidden>
-        <div class="canvas-holder" id="canvas-holder">
-          <canvas id="stage"></canvas>
-          <div class="sel" id="sel" hidden>
-            <span class="sel-size" id="sel-size"></span>
-          </div>
-        </div>
-        <div class="stage-meta">
-          <span id="meta-dims">—</span>
-          <span class="hint">drag on the image to mark a crop region · Esc clears</span>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
+<div class="shell" id="shell">
+  <aside class="rail" id="rail" aria-label="Tools">
+    <input class="rail-filter" id="rail-filter" type="search" placeholder="filter tools…" autocomplete="off" spellcheck="false" />
+    <nav class="rail-list" id="rail-list"></nav>
+    <div class="rail-foot" id="rail-foot"></div>
+  </aside>
+  <main class="view" id="view"></main>
+</div>
 
 <footer class="site-foot">
-  <span>Everything runs client-side — no server, no upload, no telemetry.</span>
+  <span>Everything runs client-side — no server, no upload, no accounts.</span>
   <span class="foot-sep">/</span>
   <a href="https://github.com/rueyday/WebLab" target="_blank" rel="noopener">source</a>
+  <span class="foot-sep">/</span>
+  <a href="privacy.html">privacy</a>
+  <span class="foot-sep">/</span>
+  <span id="foot-version">v2</span>
+  <span class="spacer"></span>
+  <span id="foot-offline" class="chip" hidden>offline ready</span>
 </footer>
 
-<div class="toast" id="toast" hidden></div>
-<script src="app.js"></script>
+<div id="palette-host" hidden></div>
+<div id="modal-host" hidden></div>
+<div class="toast-stack" id="toast-stack" aria-live="polite"></div>
+
+<script type="module" src="js/main.js"></script>
 </body>
 </html>

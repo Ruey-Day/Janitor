@@ -1,0 +1,20 @@
+{
+  "name": "TRINKET LAB",
+  "short_name": "Trinket",
+  "description": "Every small web tool you need — text, images, colour, JSON, hashes, QR, converters, timers, notes — running entirely in your browser.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#04060d",
+  "theme_color": "#04060d",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Text Metrics", "url": "./#/text" },
+    { "name": "Image Forge", "url": "./#/image" },
+    { "name": "JSON Studio", "url": "./#/json" },
+    { "name": "Notes & Tasks", "url": "./#/notes" }
+  ]
+}
